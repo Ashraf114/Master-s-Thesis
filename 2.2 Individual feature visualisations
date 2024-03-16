@@ -1,0 +1,28 @@
+
+This is the frequency distribution of the most frequent Gene values:
+
+top_gene <- train %>%
+  group_by(Gene) %>%
+  summarise(ct = n()) %>%
+  filter(ct > 40)
+
+top_gene %>%
+  ggplot(aes(reorder(Gene, -ct, FUN = min), ct)) +
+  geom_point(size = 4) +
+  labs(x = "Gene", y = "Frequency") +
+  coord_flip()
+Fig. 1
+Fig. 1
+
+top_gene_test <- test %>%
+  group_by(Gene) %>%
+  summarise(ct = n()) %>%
+  filter(ct > 40)
+
+top_gene_test %>%
+  ggplot(aes(reorder(Gene, -ct, FUN = min), ct)) +
+  geom_point(size = 4) +
+  labs(x = "Gene", y = "Frequency") +
+  coord_flip()
+Fig. 2
+Fig. 2
