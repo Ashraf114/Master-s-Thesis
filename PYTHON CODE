@@ -1,0 +1,23 @@
+from flask import Flask, render_template, request, jsonify
+from your_model_module import predict  # Import your model function
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/predict", methods=["POST"])
+def make_prediction():
+    data = request.json
+    glucose = float(data["glucose"])
+    blood_pressure = float(data["blood-pressure"])
+    bmi = float(data["bmi"])
+    
+    # Call your model function to make prediction
+    prediction = predict(glucose, blood_pressure, bmi)  # Replace with your model function
+    
+    return jsonify({"prediction": prediction})
+
+if __name__ == "__main__":
+    app.run(debug=True)
