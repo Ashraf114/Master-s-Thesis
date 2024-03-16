@@ -1,0 +1,112 @@
+
+
+2.1 First table overviews of the data:
+We use the summary and glimpse tools for a first overview:
+
+train <- train %>%
+  mutate(Gene = factor(Gene),
+         Variation = factor(Variation),
+         Class = factor(Class))
+
+test <- test %>%
+  mutate(Gene = factor(Gene),
+         Variation = factor(Variation))
+
+summary(train, maxsum = 9)
+##        ID            Gene                     Variation    Class  
+##  Min.   :   0   BRCA1  : 264   Truncating Mutations:  93   1:568  
+##  1st Qu.: 830   TP53   : 163   Deletion            :  74   2:452  
+##  Median :1660   EGFR   : 141   Amplification       :  71   3: 89  
+##  Mean   :1660   PTEN   : 126   Fusions             :  34   4:686  
+##  3rd Qu.:2490   BRCA2  : 125   Overexpression      :   6   5:242  
+##  Max.   :3320   KIT    :  99   G12V                :   4   6:275  
+##                 BRAF   :  93   E17K                :   3   7:953  
+##                 ALK    :  69   Q61H                :   3   8: 19  
+##                 (Other):2241   (Other)             :3033   9: 37
+glimpse(train)
+## Observations: 3,321
+## Variables: 4
+## $ ID        <dbl> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15...
+## $ Gene      <fct> FAM58A, CBL, CBL, CBL, CBL, CBL, CBL, CBL, CBL, CBL,...
+## $ Variation <fct> Truncating Mutations, W802*, Q249E, N454D, L399V, V3...
+## $ Class     <fct> 1, 2, 2, 3, 4, 4, 5, 1, 4, 4, 4, 4, 4, 4, 5, 4, 1, 4...
+nrow(train)
+## [1] 3321
+nrow(test)
+## [1] 5668
+sum(is.na(train))
+## [1] 0
+sum(is.na(test))
+## [1] 0
+train %>%
+  group_by(Gene) %>%
+  summarise(ct = n()) %>%
+  arrange(desc(ct))
+## # A tibble: 264 x 2
+##    Gene      ct
+##    <fct>  <int>
+##  1 BRCA1    264
+##  2 TP53     163
+##  3 EGFR     141
+##  4 PTEN     126
+##  5 BRCA2    125
+##  6 KIT       99
+##  7 BRAF      93
+##  8 ALK       69
+##  9 ERBB2     69
+## 10 PDGFRA    60
+## # ... with 254 more rows
+test %>%
+  group_by(Gene) %>%
+  summarise(ct = n()) %>%
+  arrange(desc(ct))
+## # A tibble: 1,397 x 2
+##    Gene     ct
+##    <fct> <int>
+##  1 F8      134
+##  2 CFTR     57
+##  3 F9       54
+##  4 G6PD     46
+##  5 GBA      39
+##  6 AR       38
+##  7 PAH      38
+##  8 CASR     37
+##  9 ARSA     30
+## 10 BRCA1    29
+## # ... with 1,387 more rows
+train %>%
+  group_by(Variation) %>%
+  summarise(ct = n()) %>%
+  arrange(desc(ct))
+## # A tibble: 2,996 x 2
+##    Variation               ct
+##    <fct>                <int>
+##  1 Truncating Mutations    93
+##  2 Deletion                74
+##  3 Amplification           71
+##  4 Fusions                 34
+##  5 Overexpression           6
+##  6 G12V                     4
+##  7 E17K                     3
+##  8 Q61H                     3
+##  9 Q61L                     3
+## 10 Q61R                     3
+## # ... with 2,986 more rows
+test %>%
+  group_by(Variation) %>%
+  summarise(ct = n()) %>%
+  arrange(desc(ct))
+## # A tibble: 5,628 x 2
+##    Variation               ct
+##    <fct>                <int>
+##  1 Truncating Mutations    18
+##  2 Deletion                14
+##  3 Amplification            8
+##  4 Fusions                  3
+##  5 G44D                     2
+##  6 A101V                    1
+##  7 A1020P                   1
+##  8 A1028V                   1
+##  9 A1035V                   1
+## 10 A1038V                   1
+## # ... with 5,618 more rows
